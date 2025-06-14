@@ -2,7 +2,7 @@ class Mdc < Formula
   desc "Simple markdown viewer built with Tauri"
   homepage "https://github.com/yusuke-nozoe/mdc"
   url "https://github.com/yusuke-nozoe/mdc/archive/v0.1.0.tar.gz"
-  sha256 "081675f3268611b78cf4e4994fc40e17b527ee14f972d73ef775674cc9c20e2e"
+  sha256 "YOUR_SHA256_HERE"
   license "MIT"
 
   depends_on "rust" => :build
@@ -10,19 +10,18 @@ class Mdc < Formula
   depends_on "pnpm" => :build
 
   def install
-    # Node.js依存関係をインストール
+    # フロントエンドのビルド
     system "pnpm", "install"
-
-    # フロントエンドをビルド
     system "pnpm", "build"
 
-    # Rustバイナリをビルド
-    cd "src-tauri" do
-      system "cargo", "install", "--locked", "--root", prefix, "--path", "."
-    end
+    # Tauriアプリのビルド
+    system "pnpm", "tauri", "build"
+
+    # バイナリをインストール
+    bin.install "src-tauri/target/release/mdc"
   end
 
   test do
-    system "#{bin}/mdc", "--version"
+    system "#{bin}/mdc", "--help"
   end
 end
