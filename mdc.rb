@@ -6,14 +6,22 @@ class Mdc < Formula
   license "MIT"
 
   def install
-    system "pnpm", "install"
-    system "pnpm", "build"
-    cd "src-tauri" do
-      system "cargo", "install", "--locked", "--root", prefix, "--path", "."
-    end
+    app = "mdc.app"
+    prefix.install app
+    bin.write_exec_script "#{prefix}/#{app}/Contents/MacOS/mdc"
+  end
+
+  def caveats
+    <<~EOS
+      mdc was installed to:
+        #{prefix}/mdc.app
+      
+      To use the app, just type in CLI like:
+        mdc pathname.md
+    EOS
   end
 
   test do
-    system "#{bin}/mdc", "--help"
+    assert_predicate prefix/"mdc.app", :exist?
   end
 end
