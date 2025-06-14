@@ -14,13 +14,11 @@ class Mdc < Formula
     system "pnpm", "install"
     system "pnpm", "build"
 
-    # バイナリのみビルド（DMG作成をスキップ）
-    cd "src-tauri" do
-      system "cargo", "build", "--release"
-    end
+    # Tauriビルド（重要: tauri buildを使用）
+    system "pnpm", "tauri", "build", "--target", "aarch64-apple-darwin"
 
-    # バイナリをインストール
-    bin.install "src-tauri/target/release/mdc"
+    # 生成されたバイナリをインストール
+    bin.install "src-tauri/target/aarch64-apple-darwin/release/mdc"
   end
 
   test do
