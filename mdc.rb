@@ -6,7 +6,11 @@ class Mdc < Formula
   license "MIT"
 
   def install
-    bin.install "mdc-aarch64-apple-darwin" => "mdc"
+    system "pnpm", "install"
+    system "pnpm", "build"
+    cd "src-tauri" do
+      system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    end
   end
 
   test do
