@@ -14,8 +14,10 @@ class Mdc < Formula
     system "pnpm", "install"
     system "pnpm", "build"
 
-    # Tauriアプリのビルド
-    system "pnpm", "tauri", "build"
+    # バイナリのみビルド（DMG作成をスキップ）
+    cd "src-tauri" do
+      system "cargo", "build", "--release"
+    end
 
     # バイナリをインストール
     bin.install "src-tauri/target/release/mdc"
