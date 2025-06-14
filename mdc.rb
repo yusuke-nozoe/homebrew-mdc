@@ -10,6 +10,13 @@ class Mdc < Formula
   depends_on "pnpm" => :build
 
   def install
+    # Node.js依存関係をインストール
+    system "pnpm", "install"
+
+    # フロントエンドをビルド
+    system "pnpm", "build"
+
+    # Rustバイナリをビルド
     cd "src-tauri" do
       system "cargo", "install", "--locked", "--root", prefix, "--path", "."
     end
